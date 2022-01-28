@@ -7,14 +7,18 @@ const Input = ({ name, label, half, autoFocus, type, handleShowPassword, minChar
   const { register,
     formState: { errors }
   } = useFormContext();
+  
+  const {ref, ...inputProps} = register(name, { required: <p>Please Complete This Form</p>, minLength: {value: minCharLength, message: <p>`Please enter more than ${minCharLength} characters`</p>} })
 
   return <Grid item xs={12} sm={half ? 6 : 12}>
     <TextField
     name={name}
-    error={!!errors[name]}
-    helperText={errors[name]?.message ?? ''}
-    {...register(name, { required: true, minLength: {value: minCharLength, message: `min length is ${minCharLength}`}})}
+    error={!!errors.name}
+    helperText={errors?.name?.message}
+    inputRef={ref}
+    {...inputProps}
     variant="outlined"
+    required
     fullWidth
     label={label}
     autoFocus={autoFocus}

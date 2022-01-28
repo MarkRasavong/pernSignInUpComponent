@@ -1,31 +1,27 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Container, Grid, Paper, Typography } from '@mui/material';
+import { Avatar, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material';
 import { AiFillLock } from 'react-icons/ai';
 import useStyles from './authorization.module';
+import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
 
-const initialState = { firstName: "", lastName: "", email: "", password: "", confirmPassword: "" };
-
 const Authorization = () => {
+  const methods = useForm();
   const classes = useStyles();
 
-  const [ form, setForm ] = useState(initialState);
   const [ isSignedUp, setIsSignedUp ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
   
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const switchMode = () => {
-    setForm(initialState);
     setIsSignedUp((prevIsSignedUp) => !prevIsSignedUp);
     setShowPassword(false);
   };
 
-  const handleChange = (e) => setForm({...form, [e.target.name]: e.target.value});
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
+  const onSubmit = (data) => {
+    console.log(data);
+    methods.reset();
   };
 
   return (
@@ -35,19 +31,33 @@ const Authorization = () => {
           <AiFillLock />
         </Avatar>
         <Typography component="h1" variant="h5">{isSignedUp ? "Sign Up" : "Sign In"}</Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <FormProvider {...methods}>
+        <form className={classes.form} onSubmit={methods.handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             {isSignedUp && (
               <React.Fragment>
-                <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half/> 
-                <Input name="lastName" label="Last Name" handleChange={handleChange} half/>
+                <Input name="firstName" label="First Name" autoFocus half minCharLength={2} /> 
+                <Input name="lastName" label="Last Name" half minCharLength={2}/>
               </React.Fragment>
             )}
-            <Input name="email" label="Email" handleChange={handleChange} type="email" />
-            <Input name="password" label="Password" handleChange={handleChange} type={ showPassword ? "text" : "password" } handleShowPassword={handleShowPassword} />
-            { isSignedUp && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" /> }
+            <Grid item xs={12} sm={12}>
+            <TextField
+            error={!!methods.formState.errors["email"]}
+            helperText={methods.formState.errors["email"]?.message ?? ''}
+            {...methods.register("email",{required: true, pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Entered value does not match email format"
+            }})}
+            variant="outlined"
+            fullWidth
+            label="email"
+            type="email"
+            />
           </Grid>
-          <Button className={classes.submit} color="primary" variant="contained" fullWidth type="submit">{ isSignedUp ? "Sign Up" : "Sign In"}</Button>
+            <Input name="password" label="Password" type={ showPassword ? "text" : "password" } handleShowPassword={handleShowPassword} minCharLength={5}/>
+            { isSignedUp && <Input name="confirmPassword" label="Repeat Password" type="password" minCharLength={5} /> }
+          </Grid>
+          <Button className={classes.submit} color="primary" variant="contained" fullWidth type="submit" style={{marginTop: "10px"}}>{ isSignedUp ? "Sign Up" : "Sign In"}</Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
@@ -56,6 +66,7 @@ const Authorization = () => {
             </Grid>
           </Grid>
         </form>
+        </FormProvider>
       </Paper>
     </Container>
   )

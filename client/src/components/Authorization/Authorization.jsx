@@ -4,6 +4,7 @@ import { AiFillLock } from 'react-icons/ai';
 import useStyles from './authorization.module';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
+import UserRegistrationDB from '../../apis/UserRegistrationDB';
 
 const Authorization = () => {
   const methods = useForm();
@@ -20,7 +21,14 @@ const Authorization = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    UserRegistrationDB.post("/create-user",{
+      data
+    }).then(() => {
+      window.location("/");
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
     methods.reset();
   };
 
@@ -36,8 +44,8 @@ const Authorization = () => {
           <Grid container spacing={2}>
             {isSignedUp && (
               <React.Fragment>
-                <Input name="firstName" label="First Name" autoFocus half minCharLength={2} /> 
-                <Input name="lastName" label="Last Name" half minCharLength={2}/>
+                <Input name="first_name" label="First Name" autoFocus half minCharLength={2} /> 
+                <Input name="last_name" label="Last Name" half minCharLength={2}/>
               </React.Fragment>
             )}
             <Grid item xs={12} sm={12}>

@@ -9,6 +9,8 @@ import { CssBaseline } from '@mui/material';
 const theme = createTheme();
 
 const App = () => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   return (
     <React.Fragment>
       <BrowserRouter>
@@ -16,7 +18,7 @@ const App = () => {
           <CssBaseline />
           <Routes>
             <Route path="/" element={<Authorization />} />
-            <Route path="/user" element={<User />} />
+            <Route path="/user" element={!user ? <Authorization /> : <User />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

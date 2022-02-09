@@ -21,7 +21,7 @@ const Authorization = () => {
   };
 
   const onSubmit = (data) => {
-    UserRegistrationDB.post("/create-user",{
+    UserRegistrationDB.post("/users/create",{
       data
     }).then(() => {
       window.location("/");

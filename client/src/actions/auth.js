@@ -9,4 +9,14 @@ export const registerUser = (formData, nav) => async (dispatch) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const logUser = (userCred, nav) => async (dispatch) => {
+  try {
+    const { data } = await UserRegistration.post("/users/login", userCred);
+    dispatch({ type: AUTH, data });
+    nav("/user");
+  } catch (err) {
+    console.log(err);
+  }
 }

@@ -5,7 +5,7 @@ import useStyles from './authorization.module';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../../actions/auth';
+import { registerUser, logUser } from '../../actions/auth';
 import { useDispatch } from 'react-redux';
 
 const Authorization = () => {
@@ -20,13 +20,18 @@ const Authorization = () => {
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const switchMode = () => {
+    methods.reset();
     setIsSignedUp((prevIsSignedUp) => !prevIsSignedUp);
     setShowPassword(false);
   };
 
   const onSubmit = (data) => {
-    dispatch(registerUser(data, nav));
-    methods.reset();
+
+    if(!isSignedUp){
+      dispatch(logUser(data, nav));
+    } else {
+      dispatch(registerUser(data, nav));
+    }
   };
 
   return (

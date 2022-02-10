@@ -4,9 +4,13 @@ import { AiFillLock } from 'react-icons/ai';
 import useStyles from './authorization.module';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
-import UserRegistrationDB from '../../apis/UserRegistrationDB';
+import { useNavigate } from 'react-router-dom';
+import { registerUser } from '../../actions/auth';
+import { useDispatch } from 'react-redux';
 
 const Authorization = () => {
+  const dispatch = useDispatch()
+  const nav = useNavigate();
   const methods = useForm();
   const classes = useStyles();
 
@@ -21,14 +25,7 @@ const Authorization = () => {
   };
 
   const onSubmit = (data) => {
-    UserRegistrationDB.post("/users/create",{
-      data
-    }).then(() => {
-      window.location("/");
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
+    dispatch(registerUser(data, nav));
     methods.reset();
   };
 

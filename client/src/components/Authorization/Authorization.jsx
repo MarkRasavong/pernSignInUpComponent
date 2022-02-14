@@ -4,15 +4,15 @@ import { AiFillLock } from 'react-icons/ai';
 import useStyles from './authorization.module';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
-import { useNavigate } from 'react-router-dom';
 import { registerUser, logUser } from '../../actions/auth';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Authorization = () => {
-  const dispatch = useDispatch()
-  const nav = useNavigate();
+  const dispatch = useDispatch();
   const methods = useForm();
   const classes = useStyles();
+  const nav = useNavigate();
 
   const [ isSignedUp, setIsSignedUp ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
@@ -25,12 +25,14 @@ const Authorization = () => {
     setShowPassword(false);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
 
     if(!isSignedUp){
-      dispatch(logUser(data, nav));
+      await dispatch(logUser(data));
+      nav("/user");
     } else {
-      dispatch(registerUser(data, nav));
+      await dispatch(registerUser(data));
+      nav("/user");
     }
   };
 

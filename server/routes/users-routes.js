@@ -32,10 +32,10 @@ router.post("/login", async (req, res) => {
   try {
     //FIND USER
     const findUser = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
-    if (findUser.rowCount === 0) return res.status(404).json({ message: "Email is not in users database" }) && console.log('no email found')
+    if (findUser.rowCount === 0) return res.status(404).json({ message: "Email is not in users database" });
 
     const passwordIsCorrect = await bcrypt.compare(password, findUser.rows[0].password);
-    if (!passwordIsCorrect) return res.status(400).json({ message: 'Invalid password input' }) && console.log("invalid password input");
+    if (!passwordIsCorrect) return res.status(400).json({ message: 'Invalid password input' });
 
     const token = jwt.sign({ email, password: findUser.rows[0].password }, process.env.JWT_SECRET, { expiresIn: "1hr" });
     res.status(200).json({ data: findUser.rows[0], token });

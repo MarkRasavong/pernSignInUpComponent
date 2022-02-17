@@ -9,9 +9,10 @@ router.post("/create", async (req, res) => {
   try {
     const { email, password, first_name, last_name, } = req.body;
     const hashed_password = await bcrypt.hash(password, 12);
+    const codigo = process.env.CODIGO_USARIO
 
-    const results = await pool.query(`INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [first_name, last_name, email, hashed_password]
+    const results = await pool.query(`INSERT INTO users (first_name, last_name, email, password, autoritzacio) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [first_name, last_name, email, hashed_password, codigo]
     );
     const data = results.rows[0];
 

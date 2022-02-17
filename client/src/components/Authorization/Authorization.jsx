@@ -58,7 +58,7 @@ const Authorization = () => {
             helperText={methods.formState.errors["email"]?.message ?? ''}
             {...methods.register("email",{required: true, pattern: {
               value: /^([a-z\d\.-_]+)+@(email\.com)$/,
-              message: "Invalid email with the domain @email.com"
+              message: "Invalid email: must have the domain @email.com"
             }})}
             variant="outlined"
             fullWidth

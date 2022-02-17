@@ -33,7 +33,7 @@ const NavBar = () => {
       }
   
       setUser(JSON.parse(localStorage.getItem('profile')));
-    }, [location, dispatch, user]);
+    }, [location, dispatch]);
 
     return (
         <AppBar className={classes.appBar} position='static'>

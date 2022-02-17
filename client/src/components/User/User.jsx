@@ -6,7 +6,7 @@ import { LOGOUT } from '../../constants/actionTypes';
 
 const User = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  const { first_name, last_name, user_id } = user?.data;
+  const { first_name, last_name, id} = user?.data;
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -25,7 +25,7 @@ const User = () => {
             <Typography>Hello {first_name} {last_name},</Typography>
           </Grid>
           <Grid xs={12}>
-            <Typography>Your ID is: { user_id }</Typography>
+            <Typography>Your ID is: { id }</Typography>
           </Grid>
           <Grid xs={12}>
             <Button sx={{ marginTop: "10px" }} variant="outlined" color="secondary" onClick={logoutClick}>Sign Out</Button>

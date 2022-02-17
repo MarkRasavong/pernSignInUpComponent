@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
+import PortalApi from '../../apis/PortalApi';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First Name', width: 130 },
-  { field: 'lastName', headerName: 'Last Name', width: 130 },
+  { field: 'id', headerName: 'ID', width: 130 },
+  { field: 'first_name', headerName: 'First Name', width: 130 },
+  { field: 'last_name', headerName: 'Last Name', width: 130 },
   { field: 'email', headerName: 'Email', width: 130 },
   {
-    field: 'hashedPassword',
+    field: 'password',
     headerName: 'Password',
     width: 130,
   },
@@ -21,16 +22,27 @@ const columns = [
   }
 ];
 
-const rows = [
-  { id: 1, lastName: "Rossi", firstName: 'Valentino', age: 42},
-  { id: 2, lastName: 'Marquez', firstName: 'Marc', age: 29 }
-]
-
 const AdminDash = () => {
+  const [ users, setUsers ] = useState([]);
+
+  const getUsers = async () => {
+    await PortalApi.get("/users")
+      .then( res => {
+        setUsers(res.data.data);
+      })
+      .catch( err => {
+        console.log(err.message);
+      })
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={users}
         columns={columns}
         pageSize={5}
         rowPerPageOptions={[5]}

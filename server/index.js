@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import usersRouter from './routes/users-routes.js';
+import authRoutes from './routes/auth-routes.js';
+import userRoutes from './routes/users-routes.js';
 
 const app = express();
 
@@ -13,7 +14,8 @@ app.use(express.json());
 const PORT = 5000 || process.env.PORT;
 
 //ROUTES
-app.use('/api/users', usersRouter);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 app.listen(PORT, function () {
   console.log(`Server connected @ ${PORT}`);

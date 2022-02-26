@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import { Button, Modal, Box, Typography, FormControlLabel, Checkbox, TextField, Switch, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Input from '../Authorization/Input';
+import { updateUserData } from '../../actions/user';
 
 const style = {
   position: 'absolute',
@@ -16,23 +17,26 @@ const style = {
   p: 4,
 };
 
-const EditModal = ({ userId }) => {
-  const { id, autoritzacio, first_name, last_name, email} = useSelector((state) => state.users.user.data[0]);
-  const methods = useForm({
-    defaultValues: {
-      first_name, last_name, id, email, autoritzacio
-    }
-  });
+const EditModal = ({ userId, fName, lName, auth, email }) => {
   const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
-  const isUser = process.env.REACT_APP_CODIGO_USARIO
-  const userIsAdmin = autoritzacio === isAdmin;
-  const [ adminStatus, setAdminStatus ] = useState(autoritzacio);
+  const isUser = process.env.REACT_APP_CODIGO_USARIO;
+  const [ adminStatus, setAdminStatus ] = useState(auth);
   const [ open, setOpen ] = useState(false);
+  const userIsAdmin = auth === isAdmin;
+  const dispatch = useDispatch();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const methods = useForm({
+    defaultValues: {
+      first_name: fName, last_name: lName, id: userId, email: email, autoritzacio:auth
+    }
+  });
+
+  const onSubmit = async (data) => {
+    await dispatch(updateUserData(userId, data));
+    handleClose();
+    window.location.reload();
   };
 
   return (
@@ -64,7 +68,6 @@ const EditModal = ({ userId }) => {
             }})}
             />
             <Input name="id" label="User ID" disabled sx={{ mt: 2 }}/>
-          { userIsAdmin && (
           <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel>Role</InputLabel>
             <Select
@@ -79,11 +82,11 @@ const EditModal = ({ userId }) => {
               <MenuItem value={isUser}>User</MenuItem>
             </Select>
           </FormControl>
-)} 
           <Box sx={{ mt: 2 }}>
             <Button sx={{ mr: 1 }} variant="contained" color="secondary" 
           type='submit'>Save</Button>
-            <Button variant="contained" color="error" onClick={handleClose}>Cancel</Button>
+            <Button sx={{ mr: 1 }} variant='contained' color="error" disabled={userIsAdmin && true}>Delete</Button>
+            <Button variant="contained" color="primary" onClick={handleClose}>Cancel</Button>
           </Box>
           </Box>
         </form>

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PortalApi from '../../apis/PortalApi';
 import useTable from '../../components/Tbl/useTable';
 import useStyles from './styles';
-import { Avatar, Button, Grid, InputAdornment, Paper, TableBody, TableCell, TableRow, Toolbar, Typography } from '@mui/material';
+import { Avatar, Grid, InputAdornment, Paper, TableBody, TableCell, TableRow, Toolbar, Typography } from '@mui/material';
 import PortalInput from '../PortalInput/PortalInput';
 import SearchIcon from '@mui/icons-material/Search';
+import EditModal from '../EditModal/EditModal';
 
 const headCells = [
   { id: 'fullName', label: 'Full Name'},
@@ -92,7 +93,15 @@ const AdminDash = () => {
                   {isUser === user.autoritzacio ? 'USER' : 'ADMIN'}
                 </Typography>
               </TableCell>
-              <TableCell align="left"><Button variant='contained' onClick={()=> console.log(user.id)}>Modify</Button></TableCell>
+              <TableCell align="left">
+                <EditModal 
+                userId={user.id} 
+                auth={user.autoritzacio}
+                email={user.email} 
+                fName={user.first_name} 
+                lName={user.last_name} 
+                />
+              </TableCell>
             </TableRow>
           )})}
           </TableBody>

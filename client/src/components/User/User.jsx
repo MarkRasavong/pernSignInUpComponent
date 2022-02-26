@@ -1,5 +1,6 @@
 import { Grid, Button, Typography, Container, CircularProgress } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserById } from '../../actions/user';
@@ -8,16 +9,18 @@ import EditModal from '../EditModal/EditModal';
 
 const User = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  const { first_name, last_name, id } = user?.data;
+  const { first_name, last_name, id, autoritzacio, email } = user.data;
+  const fetchedUser = useSelector(state => state.user);
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  const fetchedUser = useSelector((state) => state.users.user);
   const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
   const userAuthStatus = user?.data?.autoritzacio;
 
   useEffect(() => {
-    dispatch(fetchUserById(id, dispatch));
-  }, [dispatch])
+    dispatch(fetchUserById(id));
+  },[dispatch, id])
+
+  console.log(fetchedUser);
 
   const logoutClick = () => {
     dispatch({ type: LOGOUT });
@@ -26,7 +29,7 @@ const User = () => {
   };
 
   return(
-    !fetchedUser ? <CircularProgress /> : (
+    !user ? <CircularProgress /> : (
     <React.Fragment>
       <Container>
         <Grid container="true" spacing={2} direction="column" justifyContent="center" alignItems="center" sx={{ marginTop: '30vh' }}>
@@ -40,7 +43,7 @@ const User = () => {
             { userAuthStatus === isAdmin &&
               <Button sx={{marginRight: '10px' }} variant="outlined" color="warning" onClick={() => navigate('/admin')}>Admin Dash</Button>
             }
-            <EditModal userId={id} />
+            <EditModal userId={id} fName={first_name} lName={last_name} auth={autoritzacio} email={email}/>
             <Button variant="outlined" color="secondary" onClick={logoutClick}>Sign Out</Button>
           </Grid>
         </Grid>

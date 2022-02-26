@@ -4,6 +4,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import Input from '../Authorization/Input';
 import { updateUserData } from '../../actions/user';
+import PortalApi from '../../apis/PortalApi';
 
 const style = {
   position: 'absolute',
@@ -39,6 +40,14 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
     window.location.reload();
   };
 
+  const handleDelete = async () => {
+    await PortalApi.delete(`/users/user/${userId}`)
+      .then(
+        handleClose(),
+        window.location.reload()
+      )
+  };
+
   return (
   <React.Fragment>
     <Button sx={{marginRight: '10px' }} variant="outlined" color="primary" onClick={handleOpen}>Edit</Button>
@@ -63,7 +72,7 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
             error={!!methods.formState.errors["email"]}
             helperText={methods.formState.errors["email"]?.message ?? ''}
             {...methods.register("email",{required: true, pattern: {
-              value: /^([a-z\d\.-_]+)+@(email\.com)$/,
+              value: /^([a-z\d-_]+)+@(email\.com)$/,
               message: "Invalid email: must have the domain @email.com"
             }})}
             />
@@ -85,7 +94,9 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
           <Box sx={{ mt: 2 }}>
             <Button sx={{ mr: 1 }} variant="contained" color="secondary" 
           type='submit'>Save</Button>
-            <Button sx={{ mr: 1 }} variant='contained' color="error" disabled={userIsAdmin && true}>Delete</Button>
+            <Button sx={{ mr: 1 }} variant='contained' color="error" disabled={userIsAdmin && true} onClick={handleDelete}>
+              Delete
+              </Button>
             <Button variant="contained" color="primary" onClick={handleClose}>Cancel</Button>
           </Box>
           </Box>

@@ -1,31 +1,22 @@
 import { Grid, Button, Typography, Container, CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserById } from '../../actions/user';
 import { LOGOUT } from '../../constants/actionTypes';
 import EditModal from '../EditModal/EditModal';
 
 const User = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const { first_name, last_name, id, autoritzacio, email } = user.data;
-  const fetchedUser = useSelector(state => state.user);
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
   const userAuthStatus = user?.data?.autoritzacio;
 
-  useEffect(() => {
-    dispatch(fetchUserById(id));
-  },[dispatch, id])
-
-  console.log(fetchedUser);
-
   const logoutClick = () => {
     dispatch({ type: LOGOUT });
-    setUser(null);
     navigate("/"); 
+    setUser(null);
   };
 
   return(

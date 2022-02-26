@@ -50,6 +50,19 @@ router.put('/user/:id', async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-})
+});
 
+router.delete('/user/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const results = await pool.query('DELETE FROM users WHERE id=$1', [id]);
+
+    res.status(201).json({
+      status: 'successfully delelted',
+      data: results.rows[0]
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
 export default router;

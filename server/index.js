@@ -16,6 +16,9 @@ const PORT = 5000 || process.env.PORT;
 //ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.get("*", (req, res) => {
+  res.json({ message: "Please redirect to the appropriate route." })
+})
 
 app.listen(PORT, function () {
   console.log(`Server connected @ ${PORT}`);

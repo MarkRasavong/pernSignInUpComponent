@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import { Button, Modal, Box, Typography, FormGroup, FormControlLabel, Checkbox, TextField } from '@mui/material';
+import React, {useState} from 'react';
+import { Button, Modal, Box, Typography, FormControlLabel, Checkbox, TextField, Switch, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { useForm, FormProvider } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserById } from '../../actions/user';
+import Input from '../Authorization/Input';
 
 const style = {
   position: 'absolute',
@@ -15,14 +16,24 @@ const style = {
   p: 4,
 };
 
-const EditModal = ({ adminControls, userId }) => {
-  const dispatch = useDispatch();
-  const fetchedUser = useSelector((state) => state.users.fetchedUser.data[0]);
+const EditModal = ({ userId }) => {
+  const { id, autoritzacio, first_name, last_name, email} = useSelector((state) => state.users.user.data[0]);
+  const methods = useForm({
+    defaultValues: {
+      first_name, last_name, id, email, autoritzacio
+    }
+  });
+  const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
+  const isUser = process.env.REACT_APP_CODIGO_USARIO
+  const userIsAdmin = autoritzacio === isAdmin;
+  const [ adminStatus, setAdminStatus ] = useState(autoritzacio);
   const [ open, setOpen ] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  console.log(fetchedUser);
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
   <React.Fragment>
@@ -37,21 +48,46 @@ const EditModal = ({ adminControls, userId }) => {
       <Typography variant="h6" component="h2">
         Edit User
       </Typography>
-      <Box sx={{ mt: 2 }}>
-        <FormGroup>          
-          <TextField variant='outlined' label='First Name' value={fetchedUser.first_name}/>
-          <TextField sx={{ mt: 1 }} variant='outlined' label='Last Name' value={fetchedUser.last_name}/>
-          <TextField sx={{ mt: 1 }} variant='outlined' label='Email' value={fetchedUser.email} />
-          <TextField sx={{ mt: 1 }} variant='outlined' label='User ID' value={fetchedUser.id} disabled/>
-          { adminControls && <FormControlLabel control={<Checkbox />} 
-          label='Admin Privilages'/>}
-        </FormGroup>
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <Button sx={{ mr: 1 }} variant="contained" color="secondary" 
-        onClick={() => alert(userId)}>Save</Button>
-        <Button variant="contained" color="error" onClick={handleClose}>Cancel</Button>
-      </Box>
+        <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <Box sx={{ mt: 2 }}>
+          <Input name="first_name" label="First Name" minCharLength={2} />
+          <Input name="last_name" label="Last Name" minCharLength={2} sx={{ mt: 2 }}/>
+          <TextField
+            sx={{ mt: 2 }} 
+            fullWidth label="email" type="email"
+            error={!!methods.formState.errors["email"]}
+            helperText={methods.formState.errors["email"]?.message ?? ''}
+            {...methods.register("email",{required: true, pattern: {
+              value: /^([a-z\d\.-_]+)+@(email\.com)$/,
+              message: "Invalid email: must have the domain @email.com"
+            }})}
+            />
+            <Input name="id" label="User ID" disabled sx={{ mt: 2 }}/>
+          { userIsAdmin && (
+          <FormControl sx={{ mt: 2 }} fullWidth>
+            <InputLabel>Role</InputLabel>
+            <Select
+              value={adminStatus}
+              disabled={userIsAdmin && true}
+              label="Role"
+              {...methods.register('autoritzacio', {
+                onChange: (e) => setAdminStatus(e.target.value)
+              })}
+            >
+              <MenuItem value={isAdmin}>Admin</MenuItem>
+              <MenuItem value={isUser}>User</MenuItem>
+            </Select>
+          </FormControl>
+)} 
+          <Box sx={{ mt: 2 }}>
+            <Button sx={{ mr: 1 }} variant="contained" color="secondary" 
+          type='submit'>Save</Button>
+            <Button variant="contained" color="error" onClick={handleClose}>Cancel</Button>
+          </Box>
+          </Box>
+        </form>
+        </FormProvider>
       </Box>
     </Modal>
       </React.Fragment>

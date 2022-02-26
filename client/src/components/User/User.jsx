@@ -1,6 +1,6 @@
-import { Grid, Button, Typography, Container } from '@mui/material';
+import { Grid, Button, Typography, Container, CircularProgress } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserById } from '../../actions/user';
 import { LOGOUT } from '../../constants/actionTypes';
@@ -11,11 +11,13 @@ const User = () => {
   const { first_name, last_name, id } = user?.data;
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const fetchedUser = useSelector((state) => state.users.user);
   const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
+  const userAuthStatus = user?.data?.autoritzacio;
 
   useEffect(() => {
     dispatch(fetchUserById(id, dispatch));
-  }, [dispatch, id])
+  }, [dispatch])
 
   const logoutClick = () => {
     dispatch({ type: LOGOUT });
@@ -24,6 +26,7 @@ const User = () => {
   };
 
   return(
+    !fetchedUser ? <CircularProgress /> : (
     <React.Fragment>
       <Container>
         <Grid container="true" spacing={2} direction="column" justifyContent="center" alignItems="center" sx={{ marginTop: '30vh' }}>
@@ -34,15 +37,16 @@ const User = () => {
             <Typography>Your ID is: { id }</Typography>
           </Grid>
           <Grid xs={12} sx={{ marginTop: '10px' }}>
-            { user?.data?.autoritzacio === isAdmin &&
+            { userAuthStatus === isAdmin &&
               <Button sx={{marginRight: '10px' }} variant="outlined" color="warning" onClick={() => navigate('/admin')}>Admin Dash</Button>
             }
-            <EditModal onClickSave={() => alert('Clicked')} userId={id} />
+            <EditModal userId={id} />
             <Button variant="outlined" color="secondary" onClick={logoutClick}>Sign Out</Button>
           </Grid>
         </Grid>
       </Container>
     </React.Fragment>
+    )
   )
 };
 

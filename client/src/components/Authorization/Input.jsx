@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
-const Input = ({ name, label, half, autoFocus, type, handleShowPassword, minCharLength }) => {
+const Input = ({ name, label, half, autoFocus, type, handleShowPassword, minCharLength, value, sx, disabled }) => {
   const { register,
     formState: { errors }
   } = useFormContext();
@@ -11,7 +11,10 @@ const Input = ({ name, label, half, autoFocus, type, handleShowPassword, minChar
   return <Grid item xs={12} sm={half ? 6 : 12}>
     <TextField
     name={name}
+    value={value}
     error={!!errors[name]}
+    sx={sx}
+    disabled={disabled}
     helperText={errors[name]?.message ?? ''}
     {...register(name, { required: true, minLength: {value: minCharLength, message: `min length is ${minCharLength}`}})}
     variant="outlined"

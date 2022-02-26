@@ -4,7 +4,8 @@ import useTable from '../../components/Tbl/useTable';
 import useStyles from './styles';
 import { Avatar, Button, Grid, InputAdornment, Paper, TableBody, TableCell, TableRow, Toolbar, Typography } from '@mui/material';
 import PortalInput from '../PortalInput/PortalInput';
- 
+import SearchIcon from '@mui/icons-material/Search';
+
 const headCells = [
   { id: 'fullName', label: 'Full Name'},
   { id: 'email', label: 'Email'},
@@ -37,13 +38,13 @@ const AdminDash = () => {
 
   //SEARCH FUNCTIONALITY
   const handleSearch = e => {
-    let target = e.target;
+    let targetValue = e.target.value;
     setFilterFn({
       fn: items => {
-        if(target.value === '')
+        if(targetValue === '')
         return items;
         else
-        return items.filter(x => x.email.includes(target.value));
+        return items.filter(x => x.email.includes(targetValue));
       }
     })
   }
@@ -52,11 +53,11 @@ const AdminDash = () => {
     <Paper>
       <Toolbar>
         <PortalInput 
-          Label='Search Email'
+          label='Search by Email'
           className={classes.searchInput}
           InputProps={{
             startAdornment:(<InputAdornment position='start'>
-                S
+                <SearchIcon />
               </InputAdornment>)
           }}
           onChange={handleSearch}

@@ -18,4 +18,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/user/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const userDetails = await pool.query("SELECT * FROM users WHERE id=$1", [id]);
+
+    res.status(200).json({
+      status: 'success',
+      data: userDetails.rows
+    });
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 export default router;

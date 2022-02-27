@@ -2,23 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { AppBar, Typography, Toolbar, Avatar, Button } from '@mui/material';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 
 import useStyles from './styles';
-import { LOGOUT } from '../../constants/actionTypes';
 
 const NavBar = () => {
     const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('profile')));
-    const dispatch = useDispatch();
     let location = useLocation();
     let navigate = useNavigate();
     const classes = useStyles();
 
     const logout = () => {
-        dispatch({ type: LOGOUT });
-        setUser(null);
-        navigate('/');
+      localStorage.clear();
+      navigate("/");
     }
 
     useEffect(() => {
@@ -33,7 +29,7 @@ const NavBar = () => {
       }
   
       setUser(JSON.parse(localStorage.getItem('profile')));
-    }, [location, dispatch]);
+    }, [location]);
 
     return (
         <AppBar className={classes.appBar} position='static'>

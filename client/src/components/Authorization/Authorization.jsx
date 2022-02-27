@@ -5,11 +5,9 @@ import useStyles from './authorization.module';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
 import { registerUser, logUser } from '../../actions/auth';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Authorization = () => {
-  const dispatch = useDispatch();
   const methods = useForm();
   const classes = useStyles();
   const nav = useNavigate();
@@ -25,14 +23,14 @@ const Authorization = () => {
     setShowPassword(false);
   };
 
-  const onSubmit = (data, event) => {
+  const onSubmit = async (data, event) => {
     event.preventDefault();
 
     if(!isSignedUp){
-      dispatch(logUser(data));
+      await logUser(data);
       nav("/user");
     } else {
-      dispatch(registerUser(data));
+      await registerUser(data);
       nav("/user");
     }
   };

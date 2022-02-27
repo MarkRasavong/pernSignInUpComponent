@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import { Button, Modal, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import Input from '../Authorization/Input';
-import { updateUserData } from '../../actions/user';
 import PortalApi from '../../apis/PortalApi';
 
 const style = {
@@ -24,7 +22,6 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
   const [ adminStatus, setAdminStatus ] = useState(auth);
   const [ open, setOpen ] = useState(false);
   const userIsAdmin = auth === isAdmin;
-  const dispatch = useDispatch();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -35,7 +32,7 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
   });
 
   const onSubmit = async (data) => {
-    await dispatch(updateUserData(userId, data));
+    await PortalApi.put(`users/user/${userId}`, data);
     handleClose();
     window.location.reload();
   };

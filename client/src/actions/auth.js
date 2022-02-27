@@ -4,7 +4,7 @@ import { AUTH } from '../constants/actionTypes';
 export const registerUser = (formData) => async (dispatch) => {
   try {
     const { data } = await PortalApi.post("/auth/create", formData);
-    dispatch({ type: AUTH, data });
+    localStorage.setItem("profile", JSON.stringify(data));
   } catch (err) {
     console.log(err);
   }
@@ -13,7 +13,7 @@ export const registerUser = (formData) => async (dispatch) => {
 export const logUser = (userCred) => async (dispatch) => {
   try {
     const { data } = await PortalApi.post("/auth/login", userCred);
-    dispatch({ type: AUTH, data });
+    localStorage.setItem("profile", JSON.stringify(data));
   } catch (err) {
     console.log(err);
   }

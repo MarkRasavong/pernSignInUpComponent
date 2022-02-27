@@ -26,7 +26,6 @@ const Authorization = () => {
   };
 
   const onSubmit = (data) => {
-
     if(!isSignedUp){
       dispatch(logUser(data));
       nav("/user");

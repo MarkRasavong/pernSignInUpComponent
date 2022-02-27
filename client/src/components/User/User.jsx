@@ -14,9 +14,9 @@ const User = () => {
   const userAuthStatus = user?.data?.autoritzacio;
 
   const logoutClick = () => {
-    dispatch({ type: LOGOUT });
-    navigate("/"); 
+    localStorage.clear();
     setUser(null);
+    navigate("/"); 
   };
 
   return(

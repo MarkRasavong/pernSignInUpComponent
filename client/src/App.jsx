@@ -14,7 +14,7 @@ import Unauthorized from './components/Unauthorized/Unauthorized';
 const theme = createTheme();
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem('profile'));
+  const user = JSON.parse(sessionStorage.getItem('profile'));
 
   return (
         <ThemeProvider theme={theme}>

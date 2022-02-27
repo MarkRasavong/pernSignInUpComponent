@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import EditModal from '../EditModal/EditModal';
 
 const User = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("profile")));
   const { first_name, last_name, id, autoritzacio, email } = user?.data;
   let navigate = useNavigate();
   const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
   const userAuthStatus = user?.data?.autoritzacio;
 
   const logoutClick = () => {
-    localStorage.clear();
     navigate("/");
+    sessionStorage.clear();
   };
 
   return (

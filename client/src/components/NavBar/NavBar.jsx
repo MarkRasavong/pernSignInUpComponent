@@ -7,14 +7,14 @@ import decode from 'jwt-decode';
 import useStyles from './styles';
 
 const NavBar = () => {
-    const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [ user, setUser ] = useState(JSON.parse(sessionStorage.getItem('profile')));
     let location = useLocation();
     let navigate = useNavigate();
     const classes = useStyles();
 
     const logout = () => {
-      localStorage.clear();
       navigate("/");
+      sessionStorage.clear();
     }
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const NavBar = () => {
         if(decodedToken.exp * 1000 < new Date().getTime()) logout();
       }
   
-      setUser(JSON.parse(localStorage.getItem('profile')));
+      setUser(JSON.parse(sessionStorage.getItem('profile')));
     }, [location]);
 
     return (

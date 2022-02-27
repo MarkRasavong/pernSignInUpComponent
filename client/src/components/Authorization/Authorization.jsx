@@ -5,12 +5,11 @@ import useStyles from './authorization.module';
 import { useForm, FormProvider } from 'react-hook-form';
 import Input from './Input';
 import { registerUser, logUser } from '../../actions/auth';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 
 const Authorization = () => {
   const methods = useForm();
   const classes = useStyles();
-  const nav = useNavigate();
 
   const [ isSignedUp, setIsSignedUp ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
@@ -28,10 +27,10 @@ const Authorization = () => {
 
     if(!isSignedUp){
       await logUser(data);
-      nav("/user");
+      <Navigate to='/user' replace />;
     } else {
       await registerUser(data);
-      nav("/user");
+      <Navigate to='/user' replace />;
     }
   };
 

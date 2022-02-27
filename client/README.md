@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# PERN Stack Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A user/admin portal where an admin can edit a users' email, authorisation status, name, and surname. Users can only view their email and user id but not have access to the admin dash.
 
-## Available Scripts
+**Link to project:** https://pern-portal.netlify.app/
 
-In the project directory, you can run:
+![pern portal gif](/client/pern_portal.gif)
 
-### `npm start`
+## How It's Made:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Tech used:** HTML, CSS, JavaScript, React, Postgres, Express w/ Node.js, Self-made API
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Form handling and validation was implemented by react-hook-form and styling and switching of the registration form was created using MUI (Material UI) and authorization logic and handling tech was used with json-web-token, jwt-decode, sessionStorage and communication of API was used with axios. All passwords were salted and encoded incase of potienal hacks.
 
-### `npm test`
+https://thawing-sea-19132.herokuapp.com/api/users/
+![pern portal gif](/client/pern_portal_portal.gif)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Optimizations
 
-### `npm run build`
+Could have used password comparison in the backend to validate the repeated password. If this portal utilised redux we can render people's data instatly instead of no render due to the data being stored in sessionStorage (user page) and refreshing the page after the API post request. Admin dash should search more than just the email (e.g. name, surname, userId, etc). Login could throw an error for invalid credentials.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Lessons Learned:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+I was having trouble creating the table but learned the chain of events needed to have the pagination, columns, and sorting to work in synchronisation. React-Router-DOM has a special way of authorisated users to enter certain pages. Before we could write ternary operator with in the element property but now we must have a seperate authorisation file and logic within the App.jsx and 'RequireAuth.js'.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Examples:
 
-### `npm run eject`
+Take a look at these couple examples that I have in my own portfolio:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Nano Móvil:** https://github.com/mark-rasavong/nano_movil
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Ringo Bar:** https://github.com/mark-rasavong/ringo_bar
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**TravelNotes:** https://github.com/mark-rasavong/TravelNotes

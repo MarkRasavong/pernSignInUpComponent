@@ -74,7 +74,7 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
             }})}
             />
             <Input name="id" label="User ID" disabled sx={{ mt: 2 }}/>
-          <FormControl sx={{ mt: 2 }} fullWidth>
+          {userIsAdmin && <FormControl sx={{ mt: 2 }} fullWidth>
             <InputLabel>Role</InputLabel>
             <Select
               value={adminStatus}
@@ -87,7 +87,7 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
               <MenuItem value={isAdmin}>Admin</MenuItem>
               <MenuItem value={isUser}>User</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl>}
           <Box sx={{ mt: 2 }}>
             <Button sx={{ mr: 1 }} variant="contained" color="secondary" 
           type='submit'>Save</Button>

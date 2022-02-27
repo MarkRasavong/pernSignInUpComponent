@@ -25,7 +25,9 @@ const Authorization = () => {
     setShowPassword(false);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data, event) => {
+    event.preventDefault();
+
     if(!isSignedUp){
       dispatch(logUser(data));
       nav("/user");

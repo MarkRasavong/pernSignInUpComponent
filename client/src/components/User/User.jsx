@@ -13,7 +13,6 @@ const User = () => {
   const logoutClick = () => {
     localStorage.clear();
     navigate("/");
-    setUser(null);
   };
 
   return (

@@ -25,13 +25,13 @@ const Authorization = () => {
     setShowPassword(false);
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
 
     if(!isSignedUp){
-      await dispatch(logUser(data));
+      dispatch(logUser(data));
       nav("/user");
     } else {
-      await dispatch(registerUser(data));
+      dispatch(registerUser(data));
       nav("/user");
     }
   };

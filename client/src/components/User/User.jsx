@@ -7,7 +7,7 @@ import EditModal from '../EditModal/EditModal';
 
 const User = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  const { first_name, last_name, id, autoritzacio, email } = user.data;
+  const { first_name, last_name, id, autoritzacio, email } = user?.data;
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const isAdmin = process.env.REACT_APP_CODIGO_ADMIN;
@@ -20,7 +20,7 @@ const User = () => {
   };
 
   return(
-    !user ? <CircularProgress /> : (
+    user === null ? <CircularProgress /> : (
     <React.Fragment>
       <Container>
         <Grid container="true" spacing={2} direction="column" justifyContent="center" alignItems="center" sx={{ marginTop: '30vh' }}>

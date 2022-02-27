@@ -69,7 +69,7 @@ const EditModal = ({ userId, fName, lName, auth, email }) => {
             error={!!methods.formState.errors["email"]}
             helperText={methods.formState.errors["email"]?.message ?? ''}
             {...methods.register("email",{required: true, pattern: {
-              value: /^([a-z\d-_]+)+@(email\.com)$/,
+              value: /^([a-z\d\.-_]+)+@(email\.com)$/,
               message: "Invalid email: must have the domain @email.com"
             }})}
             />
